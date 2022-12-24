@@ -2,7 +2,13 @@ import { isEmpty } from 'class-validator';
 import { SearchUserDto } from './../dto/search-user.dto';
 import { UserModel } from './../models/user.model';
 import { CreateUserDto } from './../dto/create-user.dto';
-import { Injectable, NotFoundException, Version } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Version,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, userDocument } from './user.schema';
@@ -27,15 +33,11 @@ export class UserService {
           [el]: params[el],
         };
     }
-
     const findUser = await this.userModel.findOne(
       { ...searchParam },
       { email: 1, name: 2, uuid: 3 },
     );
-
-    if (isEmpty(findUser)) {
-      throw new NotFoundException(`Can't Found User`);
-    }
+    console.log(findUser);
 
     return findUser;
   }
@@ -56,16 +58,20 @@ export class UserService {
 
   @Version('1')
   async register(user: CreateUserDto): Promise<UserModel> {
-    // hash 비밀번호
-    const hash = await funHash(user.password);
-    const uuid = uuidv4();
-    const createUser = new this.userModel({
-      ...user,
-      password: hash,
-      uuid,
-      createAt: new Date(),
-    });
+    try {
+      // hash 비밀번호
+      const hash = await funHash(user.password);
+      const uuid = uuidv4();
+      const createUser = new this.userModel({
+        ...user,
+        password: hash,
+        uuid,
+        createAt: new Date(),
+      });
 
-    return createUser.save();
+      return createUser.save();
+    } catch (err) {
+      throw new HttpException('Data Save 500 Eroor', HttpStatus.BAD_GATEWAY);
+    }
   }
 }
