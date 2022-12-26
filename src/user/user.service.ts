@@ -74,4 +74,8 @@ export class UserService {
       throw new HttpException('Data Save 500 Eroor', HttpStatus.BAD_GATEWAY);
     }
   }
+
+  async fineOne(email: string): Promise<UserModel> {
+    return this.userModel.findOne({ email }).exec();
+  }
 }
