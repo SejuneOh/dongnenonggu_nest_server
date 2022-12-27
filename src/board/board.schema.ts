@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, HydratedDocument } from 'mongoose';
 import { User } from 'src/user/user.schema';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 export type BoardDocument = HydratedDocument<Board>;
 
@@ -54,4 +55,7 @@ export class Board extends Document {
   deleteAt: Date;
 }
 
-export const boardSchema = SchemaFactory.createForClass(Board);
+const objSchema = SchemaFactory.createForClass(Board);
+objSchema.plugin(mongoosePaginate);
+
+export const boardSchema = objSchema;

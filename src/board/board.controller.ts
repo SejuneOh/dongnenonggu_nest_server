@@ -8,6 +8,7 @@ import {
   Post,
   Get,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from 'src/dto/create-board.dto';
@@ -24,9 +25,15 @@ export class BoardController {
   async getAll() {}
 
   @Version('1')
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async getPagingList() {}
+  // @UseGuards(JwtAuthGuard)
+  @Get('paging')
+  async getPagingList(
+    @Query('condition') condition: string,
+    @Query('page') page: number,
+    @Query('count') count: number,
+  ) {
+    return this.boardService.getBoardList(condition, page, count);
+  }
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
