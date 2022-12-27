@@ -3,9 +3,7 @@ import { SearchUserDto } from './../dto/search-user.dto';
 import { HttpExceptionFilter } from './../http-exception/http-exception.filter';
 import { UserService } from './user.service';
 import {
-  Body,
   Controller,
-  Post,
   Version,
   Get,
   Param,
@@ -16,15 +14,10 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { CreateUserDto } from 'src/dto/create-user.dto';
 import { Response } from 'express';
-import { AuthGuard } from '@nestjs/passport';
-import { LocalAuthGuard } from 'src/auth/local.auth-gaurd';
-import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
 
 @Controller('user')
-// @UseFilters(new HttpExceptionFilter())
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -41,7 +34,6 @@ export class UserController {
   }
 
   @Version('1')
-  @UseGuards(JwtAuthGuard)
   @Get('search')
   async searchUser(@Query() params: SearchUserDto, @Res() res: Response) {
     const findUser = await this.userService.findUser(params);
