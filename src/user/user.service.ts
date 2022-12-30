@@ -1,4 +1,3 @@
-import { isEmpty } from 'class-validator';
 import { SearchUserDto } from './../dto/search-user.dto';
 import { UserModel } from './../models/user.model';
 import { CreateUserDto } from './../dto/create-user.dto';

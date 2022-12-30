@@ -37,6 +37,9 @@ export class Board extends Document {
   writerId: string; //  작성자 id
 
   @Prop()
+  writerName: string;
+
+  @Prop()
   commentId: number; // 댓글 id
 
   @Prop({ required: true, type: mongoose.SchemaTypes.Number })

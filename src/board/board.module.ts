@@ -5,6 +5,7 @@ import { JwtStrategy } from './../auth/jwt.strategy';
 import { Module } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardController } from './board.controller';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BoardController } from './board.controller';
       },
     ]),
     JwtModule,
+    UserModule,
   ],
   providers: [BoardService, JwtStrategy],
   controllers: [BoardController],

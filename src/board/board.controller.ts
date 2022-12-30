@@ -1,3 +1,4 @@
+import { UpdateBoardDto } from './../dto/update-board.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
 import {
   Body,
@@ -9,6 +10,7 @@ import {
   Get,
   Delete,
   Query,
+  Param,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from 'src/dto/create-board.dto';
@@ -28,11 +30,10 @@ export class BoardController {
   // @UseGuards(JwtAuthGuard)
   @Get('paging')
   async getPagingList(
-    @Query('condition') condition: string,
     @Query('page') page: number,
     @Query('count') count: number,
   ) {
-    return this.boardService.getBoardList(condition, page, count);
+    return this.boardService.getBoardList(page, count);
   }
 
   @Version('1')
@@ -50,19 +51,28 @@ export class BoardController {
 
   // 게시글 업데이트
   @Version('1')
-  @UseGuards(JwtAuthGuard)
-  @Put()
-  async updateBoard() {}
+  // @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  async updateBoard(
+    @Param('id') id: string,
+    @Body() updateBoard: UpdateBoardDto,
+  ) {
+    return await this.boardService.update(id, updateBoard);
+  }
 
-  // id로 baord id 삭제
   @Version('1')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteBoard() {}
+  async deletBoardById(@Param('id') id: number) {
+    this.boardService.deleteBoardById(id);
+  }
 
   // 게시물 다 삭제
   @Version('1')
   @UseGuards(JwtAuthGuard)
-  @Delete()
-  async deleteAllBoard() {}
+  @Delete('all')
+  async deleteAllBoard() {
+    // 삭제
+    return await this.boardService.deleteAllBoard();
+  }
 }
