@@ -6,6 +6,7 @@ import {
   Body,
   Controller,
   HttpStatus,
+  Logger,
   Post,
   Req,
   Res,
@@ -37,6 +38,17 @@ export class AuthController {
       .set({ access_token: access_token })
       .status(HttpStatus.OK)
       .json(user);
+  }
+
+  @Version('1')
+  @Post('signout')
+  async signOut(@Req() req: Request, @Res() res: Response) {
+    const access_token = await (await this.authService.logout()).access_token;
+
+    return res
+      .set({ access_toke: access_token })
+      .status(HttpStatus.OK)
+      .json('');
   }
 
   @Version('1')

@@ -27,7 +27,7 @@ export class BoardController {
   async getAll() {}
 
   @Version('1')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('paging')
   async getPagingList(
     @Query('page') page: number,
@@ -43,7 +43,7 @@ export class BoardController {
 
   // create
   @Version('1')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createBoard(@Body() param: CreateBoardDto): Promise<BoardDocument> {
     return await this.boardService.createBoard(param);
@@ -51,7 +51,7 @@ export class BoardController {
 
   // 게시글 업데이트
   @Version('1')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateBoard(
     @Param('id') id: string,
