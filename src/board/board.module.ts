@@ -20,6 +20,6 @@ import { UserModule } from 'src/user/user.module';
   ],
   providers: [BoardService, JwtStrategy],
   controllers: [BoardController],
-  exports: [BoardModule],
+  exports: [BoardModule, BoardService],
 })
 export class BoardModule {}

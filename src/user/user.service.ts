@@ -77,4 +77,8 @@ export class UserService {
   async fineOne(email: string): Promise<UserModel> {
     return this.userModel.findOne({ email }).exec();
   }
+
+  async findOneByUuid(uuid: string) {
+    return this.userModel.findOne({ uuid });
+  }
 }
