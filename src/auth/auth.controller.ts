@@ -6,7 +6,6 @@ import {
   Body,
   Controller,
   HttpStatus,
-  Logger,
   Post,
   Req,
   Res,
