@@ -2,7 +2,9 @@ import { CreateCommentDto } from './../dto/create-comment.dto';
 import {
   Body,
   Controller,
+  Get,
   Logger,
+  Param,
   Post,
   UseGuards,
   Version,
@@ -27,5 +29,12 @@ export class CommentController {
   @Post('reply')
   async createReply(@Body() param: CreateReplyDto) {
     return await this.commentServcie.creatReply(param);
+  }
+
+  @Version('1')
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getComments(@Param('id') id: string) {
+    return this.commentServcie.getComments(id);
   }
 }

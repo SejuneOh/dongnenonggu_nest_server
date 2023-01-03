@@ -80,4 +80,11 @@ export class CommentService {
 
     return index;
   }
+
+  // todo: 2차원 배열로 comment 나눠서  response하기
+  async getComments(boardNo: string) {
+    return this.commentModel
+      .find({ boardNo: parseInt(boardNo) })
+      .sort({ order: 1 });
+  }
 }
