@@ -61,7 +61,7 @@ export class BoardController {
   }
 
   @Version('1')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deletBoardById(@Param('id') id: number) {
     this.boardService.deleteBoardById(id);
