@@ -6,6 +6,7 @@ import { Comment, CommentDocument } from './comment.schema';
 import { Model } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { BoardService } from 'src/board/board.service';
+import { toArray } from 'rxjs';
 
 @Injectable()
 export class CommentService {
@@ -83,8 +84,33 @@ export class CommentService {
 
   // todo: 2차원 배열로 comment 나눠서  response하기
   async getComments(boardNo: string) {
-    return this.commentModel
+    //  comment list 가져오기
+    const comments = await this.commentModel
       .find({ boardNo: parseInt(boardNo) })
       .sort({ order: 1 });
+
+    if (comments.length <= 0) return;
+
+    // group 가져오기
+    const group = comments.map((comment) => comment.group);
+
+    // 중복 제거하기
+    const uniqueGroup = new Set(group);
+    const uniqueGroupArr = Array.from(uniqueGroup);
+
+    const resData = uniqueGroupArr.map((grouId) => {
+      const filterItem = comments.filter((comment) => {
+        return comment.group === grouId;
+      });
+
+      return {
+        group: grouId,
+        comments: filterItem,
+      };
+    });
+
+    // group으로 기준 나누기
+
+    return resData;
   }
 }
