@@ -26,8 +26,11 @@ export class Comment {
   })
   writerId: string;
 
+  @Prop()
+  writerName: string;
+
   @Prop({ required: true })
-  cotent: string;
+  content: string;
 
   @Prop()
   deps: number;

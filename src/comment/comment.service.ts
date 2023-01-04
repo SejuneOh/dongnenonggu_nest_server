@@ -32,7 +32,8 @@ export class CommentService {
       commentId: index,
       boardNo: param.boardNo,
       writerId: param.writerId,
-      cotent: param.content,
+      writerName: user.name,
+      content: param.content,
       deps: 0,
       order: 0,
       createAt: new Date(),
@@ -44,6 +45,10 @@ export class CommentService {
   }
 
   async creatReply(param: CreateReplyDto) {
+    // 작성자 찾기
+    const user = await this.userService.findOneByUuid(param.writerId);
+    if (!user) throw new NotFoundException('Can not found user');
+
     // 댓글 id로 댓글 리스트를 가져온다.
     const comments = await this.commentModel
       .find({ boardNo: param.boardNo, group: param.commentId })
@@ -60,7 +65,8 @@ export class CommentService {
       commentId: index,
       boardNo: param.boardNo,
       writerId: param.writerId,
-      cotent: param.content,
+      writerName: user.name,
+      content: param.content,
       deps: 1,
       order: comments[comments.length - 1].order + 1,
       createAt: new Date(),
