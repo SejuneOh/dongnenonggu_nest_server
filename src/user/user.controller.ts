@@ -18,9 +18,8 @@ import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiHeader,
   ApiOperation,
-  ApiResponse,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -47,6 +46,17 @@ export class UserController {
     return this.userService.findAll();
   }
   @Version('1')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '사용자 고유 uuid로 검색',
+    description: 'uuid로 사용자를 검색한다.',
+  }) //요약 및 설명
+  @ApiBearerAuth('access_token')
+  @ApiCreatedResponse({
+    status: 200,
+    description: 'uuid로 사용자를 검색한다.',
+    type: User,
+  })
   @Get('uuid/:id')
   findUserkey(@Param('id') uuid: string) {
     return this.userService.findUserKey(uuid);
