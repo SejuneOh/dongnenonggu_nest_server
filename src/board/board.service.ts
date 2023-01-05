@@ -66,13 +66,8 @@ export class BoardService {
     if (!findBoard) {
       throw new NotFoundException("Can't found board");
     }
-    console.log('in');
 
     const _id = findBoard._id;
-    console.log(
-      '🚀 ~ file: board.service.ts:72 ~ BoardService ~ update ~ _id',
-      _id,
-    );
 
     return await this.boardModel
       .findByIdAndUpdate(_id, {

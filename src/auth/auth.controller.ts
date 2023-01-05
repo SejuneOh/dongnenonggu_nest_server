@@ -29,9 +29,7 @@ export class AuthController {
   @Post('signin')
   async signIn(@Req() req: Request, @Res() res: Response) {
     const user = req.user;
-    const access_token = await (
-      await this.authService.login(req.user)
-    ).access_token;
+    const access_token = (await this.authService.login(req.user)).access_token;
 
     return res
       .set({ access_token: access_token })

@@ -22,9 +22,7 @@ import { ConfigModule } from '@nestjs/config';
         name: User.name,
         useFactory: () => {
           const schema = UserSchema;
-          schema.pre('save', () => {
-            console.log('저장 이전에 사용한다.');
-          });
+          schema.pre('save', () => {});
 
           return schema;
         },

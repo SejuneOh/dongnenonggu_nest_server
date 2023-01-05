@@ -38,8 +38,6 @@ export class UserController {
   async searchUser(@Query() params: SearchUserDto, @Res() res: Response) {
     const findUser = await this.userService.findUser(params);
 
-    console.log(`this controller find user ${findUser}`);
-
     if (!params) {
       throw new NotFoundException("Can't found user");
     }

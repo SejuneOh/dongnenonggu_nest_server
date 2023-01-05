@@ -36,7 +36,6 @@ export class UserService {
       { ...searchParam },
       { email: 1, name: 2, uuid: 3 },
     );
-    console.log(findUser);
 
     return findUser;
   }

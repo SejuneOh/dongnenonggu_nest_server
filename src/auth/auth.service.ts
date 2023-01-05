@@ -14,7 +14,12 @@ export class AuthService {
     const findUser = await this.userService.fineOne(email);
 
     if (findUser && (await isHashValid(pass, findUser.password))) {
-      return findUser;
+      // password를 제외한 필요 정보만 전달한다.
+      return {
+        uuid: findUser.uuid,
+        email: findUser.email,
+        name: findUser.name,
+      };
     }
     return null;
   }
