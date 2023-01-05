@@ -20,6 +20,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -61,10 +62,18 @@ export class UserController {
   findUserkey(@Param('id') uuid: string) {
     return this.userService.findUserKey(uuid);
   }
-
   @Version('1')
+  @ApiOperation({
+    summary: 'email, uuid, 이름으로 사용자를 검색한다.',
+    description: '사용자 email, uuid, 이름으로 사용자 id를 검색한다.',
+  }) //요약 및 설명
+  @ApiQuery({ name: 'email', required: true, description: '사용자 email' })
+  @ApiQuery({ name: 'uuid', required: true, description: '사용자 uuid' })
+  @ApiQuery({ name: 'name', required: true, description: '사용자 이름' })
   @Get('search')
   async searchUser(@Query() params: SearchUserDto, @Res() res: Response) {
+    console.log(params);
+
     const findUser = await this.userService.findUser(params);
 
     if (!params) {
