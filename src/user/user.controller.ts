@@ -1,6 +1,5 @@
-import { UserModel } from './../models/user.model';
+import { User } from './user.schema';
 import { SearchUserDto } from './../dto/search-user.dto';
-import { HttpExceptionFilter } from './../http-exception/http-exception.filter';
 import { UserService } from './user.service';
 import {
   Controller,
@@ -16,14 +15,24 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags('사용자 API')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
   @Get('all')
+  @ApiOperation({
+    summary: '모든 사용자 정보',
+    description: 'JWT 토큰을 인증 후 모든 사용자 정보를 가져온다',
+  }) //요약 및 설명
+  @ApiCreatedResponse({
+    description: '모든 유저 정보를 가져온다.',
+    type: Array<User>,
+  })
   findAll() {
     return this.userService.findAll();
   }
