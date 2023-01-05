@@ -15,7 +15,14 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('user')
 @ApiTags('사용자 API')
@@ -29,9 +36,12 @@ export class UserController {
     summary: '모든 사용자 정보',
     description: 'JWT 토큰을 인증 후 모든 사용자 정보를 가져온다',
   }) //요약 및 설명
+  @ApiBearerAuth('access_token')
   @ApiCreatedResponse({
-    description: '모든 유저 정보를 가져온다.',
-    type: Array<User>,
+    status: 200,
+    description: '사용자 정보를 모두 가져온다.',
+    type: User,
+    isArray: true,
   })
   findAll() {
     return this.userService.findAll();
