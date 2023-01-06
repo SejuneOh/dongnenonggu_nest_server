@@ -14,20 +14,19 @@ import {
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from 'src/dto/create-board.dto';
-import { BoardDocument } from './board.schema';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Board, BoardDocument } from './board.schema';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+  ApiBody,
+} from '@nestjs/swagger';
 
 @Controller('board')
 @ApiTags('게시글 API')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
-
-  //  get all board list
-  @Version('1')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access_token')
-  @Get()
-  async getAll() {}
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
@@ -50,6 +49,14 @@ export class BoardController {
   @Version('1')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access_token')
+  @ApiOperation({ summary: '게시글 등록', description: '게시들 등록 api ' })
+  @ApiCreatedResponse({
+    status: 200,
+    description:
+      '게시글 정보를 게시글 내용을 전달 받아 새로운 게시글을 등록한다.',
+    type: Board,
+  })
+  @ApiBody({ type: CreateBoardDto })
   @Post()
   async createBoard(@Body() param: CreateBoardDto): Promise<BoardDocument> {
     return await this.boardService.createBoard(param);
