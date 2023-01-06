@@ -123,6 +123,7 @@ export class BoardController {
     type: Board,
   })
   @ApiParam({ name: 'id', description: '게시글 번호' })
+  @ApiBody({ type: UpdateBoardDto })
   @Put(':id')
   async updateBoard(
     @Param('id') id: string,
