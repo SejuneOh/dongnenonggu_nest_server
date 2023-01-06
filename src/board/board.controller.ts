@@ -15,19 +15,23 @@ import {
 import { BoardService } from './board.service';
 import { CreateBoardDto } from 'src/dto/create-board.dto';
 import { BoardDocument } from './board.schema';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('board')
+@ApiTags('게시글 API')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   //  get all board list
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Get()
   async getAll() {}
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Get('paging')
   async getPagingList(
     @Query('page') page: number,
@@ -38,12 +42,14 @@ export class BoardController {
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Get(':id')
   async getOneBoard() {}
 
   // create
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Post()
   async createBoard(@Body() param: CreateBoardDto): Promise<BoardDocument> {
     return await this.boardService.createBoard(param);
@@ -52,6 +58,7 @@ export class BoardController {
   // 게시글 업데이트
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Put(':id')
   async updateBoard(
     @Param('id') id: string,
@@ -62,6 +69,7 @@ export class BoardController {
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Delete(':id')
   async deletBoardById(@Param('id') id: number) {
     this.boardService.deleteBoardById(id);
@@ -70,6 +78,7 @@ export class BoardController {
   // 게시물 다 삭제
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Delete('all')
   async deleteAllBoard() {
     // 삭제
