@@ -1,3 +1,4 @@
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateCommentDto } from './../dto/create-comment.dto';
 import {
   Body,
@@ -14,11 +15,13 @@ import { CommentService } from './comment.service';
 import { CreateReplyDto } from 'src/dto/create-reply.dto';
 
 @Controller('comment')
+@ApiTags(' 댓글 API')
 export class CommentController {
   constructor(private readonly commentServcie: CommentService) {}
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Post()
   async createComment(@Body() param: CreateCommentDto) {
     return this.commentServcie.createComment(param);
@@ -26,6 +29,7 @@ export class CommentController {
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Post('reply')
   async createReply(@Body() param: CreateReplyDto) {
     return await this.commentServcie.creatReply(param);
@@ -33,6 +37,7 @@ export class CommentController {
 
   @Version('1')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access_token')
   @Get(':id')
   async getComments(@Param('id') id: string) {
     return this.commentServcie.getComments(id);
