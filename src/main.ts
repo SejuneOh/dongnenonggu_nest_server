@@ -1,4 +1,5 @@
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './util/swagger';
@@ -20,8 +21,8 @@ async function bootstrap() {
     );
 
   setupSwagger(app);
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 
-  logger.log('Server application start');
+  logger.log(`Server application start`);
 }
 bootstrap();
