@@ -5,11 +5,14 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel } from 'mongoose';
 import { CreateBoardDto } from 'src/dto/create-board.dto';
 import { UserService } from 'src/user/user.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Injectable()
 export class BoardService {
@@ -18,6 +21,8 @@ export class BoardService {
     @InjectModel(Board.name)
     private boardModelPge: PaginateModel<BoardDocument>,
     private userService: UserService,
+    @Inject(forwardRef(() => CommentService))
+    private commentService: CommentService,
   ) {}
   async createBoard(boardData: CreateBoardDto): Promise<BoardDocument> {
     const lastBoard = await this.boardModel.findOne().sort({ boardNo: -1 }); //-1 가장 최근값
@@ -51,6 +56,15 @@ export class BoardService {
   }
 
   async deleteBoardById(id: number) {
+    const board = await this.boardModel.findOne({ boardNo: id });
+
+    if (!board) {
+      throw new NotFoundException('Cant Found Board item');
+    }
+
+    // comment 삭제
+    this.commentService.deleteCommentByBoardId(id);
+
     return await this.boardModel.deleteOne({ boardNo: id });
   }
 

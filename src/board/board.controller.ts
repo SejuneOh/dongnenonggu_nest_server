@@ -24,7 +24,6 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
-import { type } from 'os';
 
 @Controller('board')
 @ApiTags('게시글 API')
@@ -146,7 +145,7 @@ export class BoardController {
   })
   @Delete(':id')
   async deletBoardById(@Param('id') id: number) {
-    this.boardService.deleteBoardById(id);
+    return this.boardService.deleteBoardById(id);
   }
 
   // 게시물 다 삭제
@@ -160,6 +159,11 @@ export class BoardController {
   @ApiCreatedResponse({
     status: 200,
     description: '게시글 전부 삭제 완료시 status 200',
+    schema: {
+      example: {
+        data: { acknowledged: true, deleteCount: 1 },
+      },
+    },
   })
   @Delete('all')
   async deleteAllBoard() {
