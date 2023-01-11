@@ -1,18 +1,24 @@
 import { CreateReplyDto } from './../dto/create-reply.dto';
 import { CreateCommentDto } from './../dto/create-comment.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { Comment, CommentDocument } from './comment.schema';
 import { Model } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { BoardService } from 'src/board/board.service';
-import { toArray } from 'rxjs';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
     private readonly userService: UserService,
+    @Inject(forwardRef(() => BoardService))
     private readonly boardService: BoardService,
   ) {}
 
@@ -118,5 +124,9 @@ export class CommentService {
     // group으로 기준 나누기
 
     return resData;
+  }
+
+  async deleteCommentByBoardId(id: number) {
+    return this.commentModel.deleteMany({ boardNo: id });
   }
 }
