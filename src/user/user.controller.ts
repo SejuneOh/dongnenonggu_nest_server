@@ -11,7 +11,6 @@ import {
   Res,
   HttpStatus,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt.auth-gaurd';
